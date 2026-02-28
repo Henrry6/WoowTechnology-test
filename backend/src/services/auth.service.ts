@@ -20,27 +20,31 @@ export const AuthService = {
   },
 
   async login(email: string, password: string) {
-    const user = await UserRepository.findByEmail(email);
-    if (!user) {
-      throw new Error("Credenciales inválidas");
-    }
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      throw new Error("Credenciales inválidas");
-    }
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
-      JWT_SECRET,
-      { expiresIn: "1d" },
-    );
+    try {
+      const user = await UserRepository.findByEmail(email);
+      if (!user) {
+        throw new Error("Credenciales inválidas");
+      }
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        throw new Error("Credenciales inválidas");
+      }
+      const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: "1d" },
+      );
 
-    return {
-      token,
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
-    };
+      return {
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        },
+      };
+    } catch (e) {
+      throw e;
+    }
   },
 };

@@ -64,10 +64,12 @@ export const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button disabled={loading} className="w-full font-bold">
-          <span className="font-bold">
-            {loading ? "Cargando..." : "Ingresar"}
-          </span>
+        <Button
+          htmlType="submit"
+          disabled={loading}
+          className="w-full font-bold"
+        >
+          {loading ? "Cargando..." : "Ingresar"}
         </Button>
         <button
           onClick={() => navigate("/register")}
